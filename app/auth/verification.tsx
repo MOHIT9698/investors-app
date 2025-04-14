@@ -44,9 +44,7 @@ const Verification = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerShown: true,
-      title: "", // No title
-      headerBackTitleVisible: false, // Hide text next to back button (iOS)
+      headerShown: false,
     });
   }, [navigation]);
 
@@ -74,7 +72,7 @@ const Verification = () => {
           />
 
           <View style={styles.buttonContainer} >
-            <CustomButton title='Send the Code' variant='contained' fontSize={14} onPress={handleSubmit(sendOtp)} />
+            <CustomButton title='Send Code' variant='contained' fontSize={14} onPress={handleSubmit(sendOtp)} />
 
 
 

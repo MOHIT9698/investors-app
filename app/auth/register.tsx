@@ -6,6 +6,8 @@ import CustomButton from "@/components/CustomButton";
 import FormTextField from "@/components/form-fields/FormTextField";
 import { AppImages } from "@/assets/images";
 import { BackIcon } from "@/components/ui/Icons/Svg";
+import { registerSchema } from "@/zod/register";
+import { zodResolver } from "@hookform/resolvers/zod";
 const { height, width } = Dimensions.get("window"); // Get device height
 
 
@@ -13,6 +15,7 @@ export default function RegisterScreen() {
   const router = useRouter();
   const navigation = useNavigation();
   const { control, handleSubmit, formState: { errors } } = useForm();
+  // const { control, handleSubmit, formState: { errors } } = useForm({resolver:zodResolver(registerSchema)});
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -20,10 +23,9 @@ export default function RegisterScreen() {
 
 
   const onSubmit = (data: any) => {
-    Alert.alert("Success", `Welcome, ${data.name}!`);
-    router.push("/"); // Navigate to home after registration
+    console.log("🚀 Submitted Data:", data);
   };
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.headContainer}>
@@ -50,7 +52,7 @@ export default function RegisterScreen() {
 
         <Controller
           control={control}
-          name="username"
+          name="user_name"
           rules={{ required: "Username is required" }}
           render={({ field: { onChange, value } }) => (
             <FormTextField
@@ -66,22 +68,23 @@ export default function RegisterScreen() {
 
         <Controller
           control={control}
-          name="password"
-          rules={{ required: "Password is required", minLength: { value: 6, message: "Password must be at least 6 characters" } }}
+          name="pin"
+          rules={{ required: "Pin is required", minLength: { value: 4, message: "Pin must be at least 4 digits" }, }}
           render={({ field: { onChange, value } }) => (
             <FormTextField
               // label={"Password"}
-              placeholder="Password"
+              placeholder="Pin"
               secureTextEntry={true}
               onChange={onChange}
               value={value}
+              keyboardType="number-pad"
             />
           )}
         />
       </View>
       {/* {errors.password && <Text style={styles.error}>{errors.password.message}</Text>} */}
       <View style={styles.button}>
-        <CustomButton variant="contained" title="Create" onPress={() => router.replace("/auth/register")} />
+        <CustomButton variant="contained" title="Create" onPress={handleSubmit(onSubmit)} />
       </View>
       <View style={styles.button}>
         <CustomButton prefixIcon={<BackIcon color="#00bdff" />} variant="outlined" title="Back" onPress={() => router.replace("/")} />

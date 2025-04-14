@@ -5,7 +5,7 @@ interface MainProps {
     value: string;
     placeholder: string;
     label?: string;
-    keyboardType?: "default" | "email-address" | "phone-pad" | "numeric" | "decimal-pad";
+    keyboardType?: "default" | "email-address" | "phone-pad" | "numeric" | "decimal-pad" | "number-pad";
     secureTextEntry?: boolean;
     error?: boolean;
     onChange: (data: any) => void;

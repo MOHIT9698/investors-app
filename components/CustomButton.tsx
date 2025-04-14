@@ -26,7 +26,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   customButtonStyle,
 }) => {
 
-  const customBgColor = color ?? variant === "contained" ? "#00bdff" : "#FFFFFF";
+  const customBgColor = color ? color :  variant === "contained" ? "#00bdff" : "#FFFFFF";
   const customTextColor = textColor ?? variant === "contained" ? "#FFFFFF" : "#00bdff";
   const customBorderWidth = variant === "outlined" ? 2 : 0;
   const customBorderColor = variant === "outlined" ? "#00bdff" : "";
