@@ -12,6 +12,7 @@ interface CustomButtonProps {
   variant: "contained" | "outlined" | "text";
   prefixIcon?: any;
   customButtonStyle?:any;
+  disabled?:boolean;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -24,17 +25,18 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   prefixIcon,
   fontSize,
   customButtonStyle,
+  disabled,
 }) => {
 
-  const customBgColor = color ? color :  variant === "contained" ? "#00bdff" : "#FFFFFF";
-  const customTextColor = textColor ?? variant === "contained" ? "#FFFFFF" : "#00bdff";
+  const customBgColor = disabled === true ? "#ccd1d1" : color ? color :  variant === "contained" ? "#00bdff" : "#FFFFFF";
+  const customTextColor = disabled === true ? "white" : textColor ?? variant === "contained" ? "#FFFFFF" : "#00bdff";
   const customBorderWidth = variant === "outlined" ? 2 : 0;
   const customBorderColor = variant === "outlined" ? "#00bdff" : "";
   const customBorderRadius = borderRadius ?? 10;
 
   return (
     <TouchableOpacity
-      style={[styles.button, customButtonStyle, { backgroundColor: customBgColor, borderWidth: customBorderWidth, borderColor: customBorderColor, borderRadius: customBorderRadius }]}
+      style={[styles.button, customButtonStyle, disabled &&{pointerEvents : "none"}, { backgroundColor: customBgColor, borderWidth: customBorderWidth, borderColor: customBorderColor, borderRadius: customBorderRadius }]}
       onPress={onPress}
     >
       {

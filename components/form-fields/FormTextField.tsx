@@ -7,10 +7,11 @@ interface MainProps {
     label?: string;
     keyboardType?: "default" | "email-address" | "phone-pad" | "numeric" | "decimal-pad" | "number-pad";
     secureTextEntry?: boolean;
-    error?: boolean;
+    error?: boolean | string;
     onChange: (data: any) => void;
     maxLength?: number;
     textColor?: string;
+    otherProps?: any;
 
 }
 
@@ -24,6 +25,7 @@ const FormTextField = ({
     maxLength,
     error,
     textColor,
+    otherProps,
 }: MainProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
@@ -54,6 +56,7 @@ const FormTextField = ({
                 maxLength={maxLength}
                 returnKeyType="done"
                 onSubmitEditing={Keyboard.dismiss}
+                {...otherProps}
             />
         </View>
     )

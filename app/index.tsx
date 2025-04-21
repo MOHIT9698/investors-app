@@ -35,7 +35,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.bottomContainer}>
                 <Text style={styles.title2}>Lets Get Started!</Text>
-                <CustomButton customButtonStyle={{width:"100%"}} variant="text" title="Create Account" onPress={() => router.replace("/auth/verification")} borderRadius={50} />
+                <CustomButton customButtonStyle={{ width: "100%" }} variant="text" title="Create Account" onPress={() => router.replace("/auth/verification")} borderRadius={50} />
                 <TextButton customStyle={styles.alreadyAccount} textColor="white" title="I already have an account" onPress={() => router.replace("/auth/login")} />
             </View>
         </LinearGradient>
@@ -43,12 +43,12 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, paddingTop: "50%", padding: 20, flexDirection:"column", justifyContent:"space-between" },
+    container: { flex: 1, paddingTop: "50%", padding: 20, flexDirection: "column", justifyContent: "space-between" },
     heading: { display: "flex", alignItems: "center", },
     title: { fontSize: 24, fontWeight: "bold", width: "auto", color: "white", marginTop: 5 },
-    title2: { fontSize: 28, fontWeight: "300", width:220,  color: "white", marginTop: 5, textAlign: "center", marginBottom: 20,},
+    title2: { fontSize: 28, fontWeight: "300", width: 220, color: "white", marginTop: 5, textAlign: "center", marginBottom: 20, },
     title3: { fontSize: 14, fontWeight: "300", width: "auto", color: "white", marginTop: 5, textAlign: "center", marginBottom: 30, letterSpacing: 4 },
     logo: { height: 50, width: 50, },
-    bottomContainer: { width: "100%",    display: "flex", flexDirection:"column", justifyContent: "center", alignItems:"center", },
+    bottomContainer: { width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", },
     alreadyAccount: { fontSize: 14, fontWeight: "700", width: "auto", color: "white", marginBlock: 10, textAlign: "center" },
 });

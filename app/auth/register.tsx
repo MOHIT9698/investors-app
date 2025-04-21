@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, Image, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -8,13 +8,23 @@ import { AppImages } from "@/assets/images";
 import { BackIcon } from "@/components/ui/Icons/Svg";
 import { registerSchema } from "@/zod/register";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateAccountSchema } from "@/zod/authSchema";
+import CustomTextInput from "@/components/form-fields/CustomTextInput";
+import { z } from "zod";
+import apiClient from "@/src/api/client";
+import { ENDPOINTS } from "@/src/api/endPoints";
+import Toast from "react-native-toast-message";
 const { height, width } = Dimensions.get("window"); // Get device height
+type CreateForm = z.infer<typeof CreateAccountSchema>;
+
 
 
 export default function RegisterScreen() {
   const router = useRouter();
   const navigation = useNavigation();
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm<CreateForm>({
+    resolver: zodResolver(CreateAccountSchema),
+  });
   // const { control, handleSubmit, formState: { errors } } = useForm({resolver:zodResolver(registerSchema)});
 
   useEffect(() => {
@@ -22,86 +32,119 @@ export default function RegisterScreen() {
   }, [navigation])
 
 
-  const onSubmit = (data: any) => {
-    console.log("🚀 Submitted Data:", data);
+  const onSubmit = async(data: CreateForm) => {
+    try {
+      const response = await apiClient.post(ENDPOINTS.REGISTER, {
+        ...data,
+        password : data?.pin
+      });
+      console.log("response",response?.data);
+      
+
+      if (response.data?.status) {
+        Toast.show({
+          type: 'success',
+          text1: response.data.msg ?? 'User created successfully',
+          text2: "You're all set! Redirecting to the login screen...",
+          position: 'bottom',
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+
+      }
+      
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: error.msg,
+        text2: '',
+        position: 'bottom',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    }
   };
-  
+
   return (
-    <View style={styles.container}>
-      <View style={styles.headContainer}>
-        <Image source={AppImages?.home_logo} style={styles.logo} />
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.subTitle}>Join the Investor's Community and Get Started Today</Text>
-      </View>
+    <TouchableWithoutFeedback style={styles.wrapper} onPress={Keyboard.dismiss}>
+      <View
+        style={styles.wrapper} >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          style={styles.container}
+        >
 
-      <View style={styles.formContainer} >
-        <Controller
-          control={control}
-          name="name"
-          rules={{ required: "Full Name is required" }}
-          render={({ field: { onChange, value } }) => (
-            <FormTextField
-              // label="Full Name"
-              onChange={onChange}
-              placeholder="Full Name"
-              value={value}
+
+          <View style={styles.headContainer}>
+            <Image source={AppImages?.home_logo} style={styles.logo} />
+            <Text style={styles.title}>Create Account</Text>
+            <Text style={styles.subTitle}>Join the Investor's Community and Get Started Today</Text>
+          </View>
+
+          <View style={styles.formContainer} >
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, value } }) => (
+                <CustomTextInput
+                  placeholder="Full Name"
+                  value={value}
+                  onChange={onChange}
+                  error={errors.name?.message}
+                />
+              )}
             />
-          )}
-        />
-        {/* {errors.name && <Text style={styles.error}>{errors.name.message}</Text>} */}
 
-        <Controller
-          control={control}
-          name="user_name"
-          rules={{ required: "Username is required" }}
-          render={({ field: { onChange, value } }) => (
-            <FormTextField
-              placeholder="User Name"
-              onChange={onChange}
-              value={value}
+            <Controller
+              control={control}
+              name="user_name"
+              render={({ field: { onChange, value } }) => (
+                <CustomTextInput
+                  placeholder="Username"
+                  value={value}
+                  onChange={onChange}
+                  error={errors.user_name?.message}
+                />
+              )}
             />
-          )}
-        />
-        {/* {errors.username && <Text style={styles.error}>{errors.username.message}</Text>} */}
 
 
 
-        <Controller
-          control={control}
-          name="pin"
-          rules={{ required: "Pin is required", minLength: { value: 4, message: "Pin must be at least 4 digits" }, }}
-          render={({ field: { onChange, value } }) => (
-            <FormTextField
-              // label={"Password"}
-              placeholder="Pin"
-              secureTextEntry={true}
-              onChange={onChange}
-              value={value}
-              keyboardType="number-pad"
+            <Controller
+              control={control}
+              name="pin"
+              render={({ field: { onChange, value } }) => (
+                <CustomTextInput
+                  placeholder="PIN"
+                  value={value}
+                  onChange={onChange}
+                  secureTextEntry
+                  keyboardType="number-pad"
+                  error={errors.pin?.message}
+                />
+              )}
             />
-          )}
-        />
-      </View>
-      {/* {errors.password && <Text style={styles.error}>{errors.password.message}</Text>} */}
-      <View style={styles.button}>
-        <CustomButton variant="contained" title="Create" onPress={handleSubmit(onSubmit)} />
-      </View>
-      <View style={styles.button}>
-        <CustomButton prefixIcon={<BackIcon color="#00bdff" />} variant="outlined" title="Back" onPress={() => router.replace("/")} />
-      </View>
+          </View>
+          <View style={styles.button}>
+            <CustomButton variant="contained" title="Create" onPress={handleSubmit(onSubmit)} />
+          </View>
+          
 
-    </View>
+        </KeyboardAvoidingView>
+        <View style={styles.backButton}>
+            <CustomButton prefixIcon={<BackIcon color="#00bdff" />} variant="text" title="Back" onPress={() => router.replace("/")} />
+          </View>
+      </View>
+      
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
+  wrapper: { backgroundColor: "white", flex: 1, },
+  container: { flex: 1, paddingTop: height * 0.1, padding: 20, },
   headContainer: {
-    marginTop: height * 0.1,
+    // marginTop: height * 0.1,
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
@@ -127,7 +170,7 @@ const styles = StyleSheet.create({
 
   },
   formContainer: {
-    gap: 10,
+    gap: 2,
     marginTop: 20
   },
   input: {
@@ -151,4 +194,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  backButton: { marginBottom: 40, position: "absolute", bottom: 0 },
+
 });
