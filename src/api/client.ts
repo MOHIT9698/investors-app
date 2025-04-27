@@ -1,8 +1,9 @@
 // src/api/client.ts
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getAuthToken } from '../utils/utils';
 
 // const API_BASE_URL = 'https://your-api-url.com/api'; // replace with your API base URL
-const API_BASE_URL = 'https://0295-2409-40d1-f-ed2-37c2-7ed6-7260-5ce0.ngrok-free.app/api/v1'; // replace with your API base URL
+const API_BASE_URL = 'https://e6ca-2409-40d1-81-4c41-236-df1-1f68-b1e4.ngrok-free.app/api/v1'; // replace with your API base URL
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -16,8 +17,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     // Example: Add token if available
-    // const token = await getAuthToken();
-    // if (token) config.headers.Authorization = `Bearer ${token}`;
+    const token = await getAuthToken();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => Promise.reject(error)

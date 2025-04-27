@@ -10,9 +10,11 @@ import { BackIcon } from '@/components/ui/Icons/Svg';
 import apiClient from '@/src/api/client';
 import { ENDPOINTS } from '@/src/api/endPoints';
 import Toast from 'react-native-toast-message';
+import { setAuthToken } from '@/src/utils/utils';
+
 const { height, width } = Dimensions.get("window"); // Get device height
 
-const CELL_COUNT = 6; // Number of OTP digits
+const CELL_COUNT = 5; // Number of OTP digits
 
 
 const Verification = () => {
@@ -22,6 +24,7 @@ const Verification = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [contact,setContact] = useState(null);
+
 
   const ref = useBlurOnFulfill({ value: otp, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -43,6 +46,7 @@ const Verification = () => {
         });
 
         if (response.data?.status) {
+
           Toast.show({
             type: 'success',
             text1: response.data.msg ?? 'OTP sent successfully',
@@ -71,7 +75,7 @@ const Verification = () => {
 
   const verifyOtp = async() => {
     if (otp.length !== CELL_COUNT) {
-      Alert.alert("Invalid OTP", "Please enter a valid 6-digit OTP.");
+      Alert.alert("Invalid OTP", "Please enter a valid 5-digit OTP.");
       return;
     }else{
       try {
@@ -80,9 +84,10 @@ const Verification = () => {
           otp: 88888,
         });
 
-        console.log("response",response);
         
         if (response.data?.status) {
+          await setAuthToken(response?.data?.data);
+
           Toast.show({
             type: 'success',
             text1: response.data.msg ?? 'OTP has been verified',

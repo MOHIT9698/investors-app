@@ -14,6 +14,8 @@ import { z } from "zod";
 import apiClient from "@/src/api/client";
 import { ENDPOINTS } from "@/src/api/endPoints";
 import Toast from "react-native-toast-message";
+import * as SecureStore from 'expo-secure-store';
+
 const { height, width } = Dimensions.get("window"); // Get device height
 type CreateForm = z.infer<typeof CreateAccountSchema>;
 
@@ -27,21 +29,21 @@ export default function RegisterScreen() {
   });
   // const { control, handleSubmit, formState: { errors } } = useForm({resolver:zodResolver(registerSchema)});
 
+
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation])
 
 
-  const onSubmit = async(data: CreateForm) => {
+  const onSubmit = async (data: CreateForm) => {
     try {
       const response = await apiClient.post(ENDPOINTS.REGISTER, {
         ...data,
-        password : data?.pin
+        password: data?.pin
       });
-      console.log("response",response?.data);
-      
 
       if (response.data?.status) {
+
         Toast.show({
           type: 'success',
           text1: response.data.msg ?? 'User created successfully',
@@ -50,10 +52,13 @@ export default function RegisterScreen() {
           visibilityTime: 3000,
           autoHide: true,
         });
+        router.push("/auth/login");
 
       }
-      
+
     } catch (error: any) {
+      console.log("error", error);
+
       Toast.show({
         type: 'error',
         text1: error.msg,
@@ -128,14 +133,14 @@ export default function RegisterScreen() {
           <View style={styles.button}>
             <CustomButton variant="contained" title="Create" onPress={handleSubmit(onSubmit)} />
           </View>
-          
+
 
         </KeyboardAvoidingView>
         <View style={styles.backButton}>
-            <CustomButton prefixIcon={<BackIcon color="#00bdff" />} variant="text" title="Back" onPress={() => router.replace("/")} />
-          </View>
+          <CustomButton prefixIcon={<BackIcon color="#00bdff" />} variant="text" title="Back" onPress={() => router.replace("/")} />
+        </View>
       </View>
-      
+
     </TouchableWithoutFeedback>
   );
 }

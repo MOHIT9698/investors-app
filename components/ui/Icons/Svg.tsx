@@ -110,5 +110,44 @@ export const BackIcon = ({ color }: IconProps) => {
         </View>
     )
 };
+export const LogoutIcon = ({ color }: IconProps) => {
+    return (
+        <View>
+            <Svg
+                width="25"
+                height="25"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <Path
+                    stroke={color ?? "#0F0F0F"}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 16.5V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3.063M11 12h10m0 0-2.5-2.5M21 12l-2.5 2.5"
+                ></Path>
+            </Svg>
+        </View>
+    )
+};
+export const EditIcon = ({ color }: IconProps) => {
+    return (
+        <View>
+            <Svg
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
+                <Path
+                    fill="#000"
+                    fillRule="evenodd"
+                    d="M21.121 2.707a3 3 0 0 0-4.242 0l-1.68 1.68-7.906 7.906a1 1 0 0 0-.263.464l-1 4a1 1 0 0 0 1.213 1.213l4-1a1 1 0 0 0 .464-.263l7.849-7.848 1.737-1.738a3 3 0 0 0 0-4.242zm-2.828 1.414a1 1 0 0 1 1.414 0l.172.172a1 1 0 0 1 0 1.414l-1.017 1.017-1.555-1.617zm-2.4 2.4 1.555 1.617-6.96 6.959-2.114.529.529-2.115zM4 8a1 1 0 0 1 1-1h5a1 1 0 1 0 0-2H5a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3h11a3 3 0 0 0 3-3v-5a1 1 0 0 0-2 0v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"
+                    clipRule="evenodd"
+                ></Path>
+            </Svg>
+        </View>
+    )
+};
 
 

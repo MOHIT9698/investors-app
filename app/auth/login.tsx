@@ -11,6 +11,7 @@ import {
   TouchableWithoutFeedback,
   Image,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +24,9 @@ import CustomButton from "@/components/CustomButton";
 import { BackIcon } from "@/components/ui/Icons/Svg";
 import Toast from "react-native-toast-message";
 import { loginSchema } from "@/zod/authSchema";
+import apiClient from "@/src/api/client";
+import { ENDPOINTS } from "@/src/api/endPoints";
+import { useAuth } from "@/src/context/AuthContext";
 const { height, width } = Dimensions.get("window"); // Get device height
 
 
@@ -31,6 +35,8 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function LoginScreen() {
   const router = useRouter();
   const navigation = useNavigation();
+  const { login } = useAuth();
+
   const {
     control,
     handleSubmit,
@@ -39,32 +45,40 @@ export default function LoginScreen() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginForm) => {
+  const onSubmit = async (data: LoginForm) => {
 
-    const userName = data?.user_name;
-    const pin = data?.pin;
-    if (userName === "mohit@2002" && pin === "2002") {
-      Toast.show({
-        type: 'success',
-        text1: 'Login Successful!',
-        text2: 'Hang tight, taking you to your dashboard...',
-        position: 'bottom',
-        visibilityTime: 3000,
-        autoHide: true,
+    try {
+      const response = await apiClient.post(ENDPOINTS.LOGIN, {
+        ...data,
+        password: data?.pin
       });
 
-      // You could navigate here...
-      router.push("/tabs");
-    } else {
+      if (response.data?.status) {
+        const token = response?.data?.data;
+        await login(token);
+        Toast.show({
+          type: 'success',
+          text1: 'Login Successful!',
+          text2: 'Hang tight, taking you to your dashboard...',
+          position: 'bottom',
+          visibilityTime: 1000,
+          autoHide: true,
+        });
+        router.push("/tabs");
+
+      }
+
+    } catch (error: any) {
       Toast.show({
         type: 'error',
         text1: 'Oops!',
-        text2: 'Invalid credentials. Try again.',
+        text2: error?.msg ?? 'Invalid credentials. Try again.',
         position: 'bottom',
         visibilityTime: 3000,
         autoHide: true,
       });
     }
+
   };
 
   useEffect(() => {
@@ -100,21 +114,28 @@ export default function LoginScreen() {
                 />
               )}
             />
-
-            <Controller
-              control={control}
-              name="pin"
-              render={({ field: { onChange, value } }) => (
-                <CustomTextInput
-                  placeholder="PIN"
-                  value={value}
-                  onChange={onChange}
-                  secureTextEntry
-                  keyboardType="number-pad"
-                  error={errors.pin?.message}
-                />
-              )}
-            />
+            <View>
+              <Controller
+                control={control}
+                name="pin"
+                render={({ field: { onChange, value } }) => (
+                  <CustomTextInput
+                    placeholder="PIN"
+                    value={value}
+                    onChange={onChange}
+                    secureTextEntry
+                    keyboardType="number-pad"
+                    error={errors.pin?.message}
+                  />
+                )}
+              />
+              <TouchableOpacity
+               onPress={() => router.replace("/auth/forgot-password")}
+                style={styles.forgotButton}
+              >
+                <Text style={{ fontSize: 14, color: "#00bdff", }}>Forgot password?</Text>
+              </TouchableOpacity>
+            </View>
 
             <View style={styles.button}>
               <CustomButton variant="contained" title="LogIn" onPress={handleSubmit(onSubmit)} />
@@ -139,6 +160,7 @@ const styles = StyleSheet.create({
   formContainer: { gap: 0, marginTop: 20, },
   button: { marginTop: 30 },
   backButton: { marginBottom: 40, position: "absolute", bottom: 0 },
+  forgotButton: { display: "flex", justifyContent: "flex-end", alignItems: "flex-end",marginTop:-20 },
 
 
 });
