@@ -10,6 +10,8 @@ interface Props {
     secureTextEntry?: boolean;
     keyboardType?: "default" | "email-address" | "phone-pad" | "numeric" | "decimal-pad" | "number-pad";
     error?: string;
+    isMultiline?: boolean;
+    numberOfLines?: number;
 }
 
 const FormTextField = ({
@@ -20,10 +22,12 @@ const FormTextField = ({
     secureTextEntry,
     keyboardType = "default",
     error,
+    isMultiline = false,
+    numberOfLines = 2,
 }: Props) => {
 
-    const handleChange = (text:string)=>{
-        if(onChange){
+    const handleChange = (text: string) => {
+        if (onChange) {
             onChange(text);
         }
     }
@@ -32,13 +36,19 @@ const FormTextField = ({
             {label && <Text style={styles.label}  >{label}</Text>}
 
             <TextInput
-                style={[styles.input, error && { borderColor: "red" }]}
+                style={[
+                    styles.textarea,
+                    { height: numberOfLines * 24 },
+                    error && { borderColor: "red" }
+                ]}
                 value={value}
                 onChangeText={handleChange}
                 placeholder={placeholder}
                 placeholderTextColor="#999"
                 secureTextEntry={secureTextEntry}
                 keyboardType={keyboardType}
+                multiline={isMultiline}
+                numberOfLines={numberOfLines}
             />
             {error && <Text style={styles.error}>{error}</Text>}
         </View>
@@ -72,5 +82,13 @@ const styles = StyleSheet.create({
         color: "red",
         marginTop: 5,
         fontSize: 14,
+    },
+    textarea: {
+        padding: 12,
+        fontSize: 16,
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingHorizontal: 10,
     },
 });

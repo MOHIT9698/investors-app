@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getAuthToken } from '../utils/utils';
 
 // const API_BASE_URL = 'https://your-api-url.com/api'; // replace with your API base URL
-const API_BASE_URL = 'https://e6ca-2409-40d1-81-4c41-236-df1-1f68-b1e4.ngrok-free.app/api/v1'; // replace with your API base URL
+const API_BASE_URL = 'https://be90-2409-40d1-81-4c41-4c58-8f2b-3c75-5c81.ngrok-free.app/api/v1'; // replace with your API base URL
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,

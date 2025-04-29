@@ -39,7 +39,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: true, // 👈 show the header now
+        headerShown: false, // 👈 show the header now
         headerTitleAlign: 'center', // 👈 optional: center the title if you want
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
@@ -80,7 +80,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile/index"
+        name="profile"
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => <NavbarProfileIcon color={color} />,

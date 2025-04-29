@@ -149,5 +149,27 @@ export const EditIcon = ({ color }: IconProps) => {
         </View>
     )
 };
+export const CrossIcon = ({ color }: IconProps) => {
+    return (
+        <View>
+            <Svg
+                width="25"
+                height="25"
+                fill="none"
+                viewBox="0 0 512 512"
+            >
+                <G id="Page-1" fill={color ?? "none"} fillRule="evenodd" stroke={color ?? "none"} strokeWidth="1">
+                    <G id="work-case" fill={color ?? "#000"} transform="translate(91.52 91.52)">
+                        <Path
+
+                            id="Close"
+                            d="M328.96 30.293 298.667 0 164.48 134.4 30.293 0 0 30.293l134.4 134.188L0 298.667l30.293 30.293 134.187-134.4 134.187 134.4 30.293-30.293-134.4-134.187z"
+                        ></Path>
+                    </G>
+                </G>
+            </Svg>
+        </View>
+    )
+};
 
 

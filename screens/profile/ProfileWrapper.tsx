@@ -1,27 +1,33 @@
 import { EditIcon } from "@/components/ui/Icons/Svg";
 import { useProfileStore } from "@/store/ProfileStore";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const { height, width } = Dimensions.get("window"); // Get device height
 
 
 export const ProfileWrapper = () => {
     const { userProfile } = useProfileStore();
+    const router = useRouter();
+    const handleEditProfile = ()=>{
+        router.replace("/tabs/profile/edit-profile")
+
+    }
 
     return (
         <View style={styles?.container}>
             <View style={styles?.ProfileHeader}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
                     <View style={styles?.avatarView}>
-                        <Text style={{ color: "white", fontSize: 38, fontWeight: "600" }}>{userProfile?.name.charAt(0)}</Text>
+                        <Text style={{ color: "white", fontSize: 38, fontWeight: "600" }}>{userProfile?.name.charAt(0) ?? "U"}</Text>
                     </View>
                     <View >
-                        <Text style={{ fontSize: 20, fontWeight: "600" }} >{userProfile?.name}</Text>
+                        <Text style={{ fontSize: 20, fontWeight: "600" }} >{userProfile?.name ?? "user"}</Text>
                         <Text style={{ fontSize: 16, fontWeight: "300" }} >@{userProfile?.user_name}</Text>
                     </View>
                 </View>
-                <View>
+                <TouchableOpacity onPress={handleEditProfile}>
                     <EditIcon color="" />
-                </View>
+                </TouchableOpacity>
 
             </View>
         </View>
