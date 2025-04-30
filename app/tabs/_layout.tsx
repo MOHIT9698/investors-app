@@ -59,7 +59,7 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name="dashboard"
         options={{
           title: 'Dashboard',
           tabBarIcon: ({ color }) => <NavbarHomeIcon className="mt-2" color={color} />,
@@ -73,7 +73,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add"
+        name="new"
         options={{
           title: 'New',
           tabBarIcon: ({ color }) => <NavbarAddIcon color={color} />,

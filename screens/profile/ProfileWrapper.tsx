@@ -1,14 +1,22 @@
 import { EditIcon } from "@/components/ui/Icons/Svg";
 import { useProfileStore } from "@/store/ProfileStore";
 import { useRouter } from "expo-router";
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const { height, width } = Dimensions.get("window"); // Get device height
 
 
 export const ProfileWrapper = () => {
-    const { userProfile } = useProfileStore();
+    const { userProfile, setProfilePayload } = useProfileStore();
     const router = useRouter();
-    const handleEditProfile = ()=>{
+    const handleEditProfile = () => {
+        const profile = {
+            name: userProfile?.name ? userProfile?.name : "",
+            profile_pic_url: userProfile?.profile_pic_url ? userProfile?.profile_pic_url : "",
+            bio: userProfile?.bio ? userProfile?.bio : "",
+            profile_pic: userProfile?.profile_pic ? userProfile?.profile_pic : "",
+        }
+
+        setProfilePayload(profile)
         router.replace("/tabs/profile/edit-profile")
 
     }
@@ -17,9 +25,12 @@ export const ProfileWrapper = () => {
         <View style={styles?.container}>
             <View style={styles?.ProfileHeader}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-                    <View style={styles?.avatarView}>
-                        <Text style={{ color: "white", fontSize: 38, fontWeight: "600" }}>{userProfile?.name.charAt(0) ?? "U"}</Text>
-                    </View>
+                    {
+                        userProfile?.profile_pic ? <Image source={{ uri: userProfile?.profile_pic }} style={styles.avatarView} /> :
+
+                            <View style={styles?.avatarView}>
+                                <Text style={{ color: "white", fontSize: 38, fontWeight: "600" }}>{userProfile?.name.charAt(0) ?? "U"}</Text>
+                            </View>}
                     <View >
                         <Text style={{ fontSize: 20, fontWeight: "600" }} >{userProfile?.name ?? "user"}</Text>
                         <Text style={{ fontSize: 16, fontWeight: "300" }} >@{userProfile?.user_name}</Text>

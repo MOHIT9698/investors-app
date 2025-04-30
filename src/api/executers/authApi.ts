@@ -1,5 +1,5 @@
 import { apiClient } from './apiClient';
-import { ENDPOINTS } from './endPoints';
+import { ENDPOINTS } from '../endPoints';
 
 export const login = async (email: string, password: string) => {
   return apiClient(ENDPOINTS.LOGIN, 'POST', { email, password });

@@ -8,22 +8,22 @@ import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'reac
 
 const EditProfile = () => {
   const router = useRouter();
-  const { userProfile } = useProfileStore();
-  const [name, setName] = useState(userProfile?.name)
-  const [bio, setBio] = useState("");
+  const { userProfile, profilePayload, setProfilePayload } = useProfileStore();
+
+
 
   const onNameChange = (text: string) => {
-    setName(text);
+    setProfilePayload({ ...profilePayload, name: text })
 
   }
   const onBioChange = (text: string) => {
-    setBio(text);
+    setProfilePayload({ ...profilePayload, bio: text })
 
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles?.container}>
-        <UploadPhoto defaultImage={"https://picsum.photos/id/237/200/300"} />
+        <UploadPhoto defaultImage={userProfile?.profile_pic} />
 
         <View style={{ marginTop: 10 }} >
           <Text style={{ fontSize: 20, fontWeight: "600", textAlign: "center" }} >{userProfile?.name ? userProfile?.name : "user"}</Text>
@@ -35,7 +35,7 @@ const EditProfile = () => {
 
           <CustomTextInput
             placeholder="name"
-            value={name}
+            value={profilePayload?.name ?? ""}
             onChange={onNameChange}
             keyboardType="default"
             label='Name'
@@ -43,7 +43,7 @@ const EditProfile = () => {
           />
           <CustomTextInput
             placeholder="Bio"
-            value={bio}
+            value={profilePayload?.bio ?? ""}
             onChange={onBioChange}
             keyboardType="default"
             isMultiline={true}

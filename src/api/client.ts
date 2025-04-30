@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getAuthToken } from '../utils/utils';
 
 // const API_BASE_URL = 'https://your-api-url.com/api'; // replace with your API base URL
-const API_BASE_URL = 'https://be90-2409-40d1-81-4c41-4c58-8f2b-3c75-5c81.ngrok-free.app/api/v1'; // replace with your API base URL
+const API_BASE_URL = 'https://7f0e-2409-40d1-c-38e9-d913-eb0e-4de4-1ee1.ngrok-free.app/api/v1'; // replace with your API base URL
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -37,12 +37,29 @@ const apiClient = {
   get: <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
     axiosInstance.get<T>(url, config),
 
-  post: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
-    axiosInstance.post<T>(url, data, config),
+  post: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+    const isFormData = data instanceof FormData;
 
-  patch: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
-    axiosInstance.patch<T>(url, data, config),
+    return axiosInstance.post<T>(url, data, {
+      ...config,
+      headers: {
+        ...(config?.headers || {}),
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+      },
+    });
+  },
 
+  patch: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+    const isFormData = data instanceof FormData;
+
+    return axiosInstance.patch<T>(url, data, {
+      ...config,
+      headers: {
+        ...(config?.headers || {}),
+        ...(isFormData ? {'Content-Type': 'multipart/form-data'} : { 'Content-Type': 'application/json' }),
+      },
+    });
+  },
   delete: <T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> =>
     axiosInstance.delete<T>(url, config),
 };
