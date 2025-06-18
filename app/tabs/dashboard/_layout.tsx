@@ -1,35 +1,20 @@
-import { LogoutIcon, } from '@/components/ui/Icons/Svg';
+import { AppImages } from '@/assets/images';
+import { FolderIcon, LogoutIcon, NotificationIcon, } from '@/components/ui/Icons/Svg';
 import { Colors } from '@/constants/Colors';
 import { Stack, useRouter } from 'expo-router';
-import { ActivityIndicator, Alert, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 
 export default function DashboardLayout() {
     const router = useRouter();
     const colorScheme = useColorScheme();
-   
 
+    const handleShowNotification = () => {
 
-    const handleLogout = () => {
-        Alert.alert(
-            "Logout",
-            "Are you sure you want to log out?",
-            [
-                {
-                    text: "Cancel",
-                    style: "cancel",
-                },
-                {
-                    text: "Logout",
-                    style: "destructive",
-                    onPress: async () => {
-                        // await SecureStore.deleteItemAsync("access_token"); // Clear access token
-                        router.replace('/auth/login'); // Navigate to login screen
-                    }
-                }
-            ],
-            { cancelable: true }
-        );
     }
+
+
+
+
     return (
         <Stack
             screenOptions={{
@@ -40,10 +25,20 @@ export default function DashboardLayout() {
                 name="index"
                 options={{
                     title: 'Dashboard',
-                    headerRight: () => (
-                        <TouchableOpacity style={{ marginRight: 0 }} onPress={handleLogout}>
-                            <LogoutIcon className='mt-2' color={Colors[colorScheme ?? 'light'].text} />
+                    headerLeft: () => (
+                        <TouchableOpacity style={{ marginRight: 0 }} onPress={() => { }}>
+                            <Image source={AppImages?.home_logo} style={styles.logo} />
                         </TouchableOpacity>
+                    ),
+                    headerRight: () => (
+                        <View style={{ marginRight: 0, display: "flex", flexDirection: "row", gap: 20 }} >
+                            <TouchableOpacity onPress={handleShowNotification}>
+                                <FolderIcon className='mt-2' color={Colors[colorScheme ?? 'light'].text} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleShowNotification}>
+                                <NotificationIcon className='mt-2' color={Colors[colorScheme ?? 'light'].text} />
+                            </TouchableOpacity>
+                        </View>
                     ),
                 }}
             />
@@ -51,3 +46,10 @@ export default function DashboardLayout() {
         </Stack>
     );
 }
+
+const styles = StyleSheet.create({
+    logo: {
+        height: 30,
+        width: 30
+    }
+})

@@ -24,7 +24,7 @@ const FormTextField = ({
     error,
     isMultiline = false,
     numberOfLines = 2,
-}: Props) => {
+}: Props) => {  
 
     const handleChange = (text: string) => {
         if (onChange) {

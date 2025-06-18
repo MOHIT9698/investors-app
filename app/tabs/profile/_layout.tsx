@@ -47,7 +47,7 @@ export default function ProfileLayout() {
             Toast.show({
                 type: 'error',
                 text1: 'Oops!',
-                text2: error?.msg ?? 'Invalid credentials. Try again.',
+                text2: error?.msg ?? 'Try again!',
                 position: 'bottom',
                 visibilityTime: 3000,
                 autoHide: true,

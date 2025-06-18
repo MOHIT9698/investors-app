@@ -4,30 +4,12 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import DashboardWrapper from '@/screens/dashboard/DashboardWrapper';
 
 export default function HomeScreen() {
   return (
-   <View style={{height:"100%", width:"100%", display:"flex", justifyContent:"center",alignItems:"center"}} >
-    <Text>This is Home Page</Text>
-   </View>
+    <View style={{ height: "100%", width: "100%" }} >
+      <DashboardWrapper />
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});

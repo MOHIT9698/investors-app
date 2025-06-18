@@ -1,0 +1,17 @@
+export const dummyStockList = [
+    { id: 1, label: "Apple Inc. (AAPL)" },
+    { id: 2, label: "Microsoft Corporation (MSFT)" },
+    { id: 3, label: "Amazon.com, Inc. (AMZN)" },
+    { id: 4, label: "Tesla, Inc. (TSLA)" },
+    { id: 5, label: "Alphabet Inc. (GOOGL)" },
+    { id: 6, label: "Meta Platforms, Inc. (META)" },
+    { id: 7, label: "NVIDIA Corporation (NVDA)" },
+    { id: 8, label: "Netflix, Inc. (NFLX)" },
+    { id: 9, label: "Berkshire Hathaway Inc. (BRK.A)" },
+    { id: 10, label: "Johnson & Johnson (JNJ)" },
+    { id: 11, label: "Visa Inc. (V)" },
+    { id: 12, label: "Walmart Inc. (WMT)" },
+    { id: 13, label: "JPMorgan Chase & Co. (JPM)" },
+    { id: 14, label: "Procter & Gamble Co. (PG)" },
+    { id: 15, label: "Intel Corporation (INTC)" },
+  ];

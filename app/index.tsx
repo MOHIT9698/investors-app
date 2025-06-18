@@ -5,7 +5,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useEffect } from "react";
 import { AppImages } from "@/assets/images";
 import TextButton from "@/components/TextButton";
-import * as SecureStore from "expo-secure-store"
 const { height, width } = Dimensions.get("window"); // Get device height
 
 export default function HomeScreen() {

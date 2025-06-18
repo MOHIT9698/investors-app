@@ -27,6 +27,8 @@ import { loginSchema } from "@/zod/authSchema";
 import apiClient from "@/src/api/client";
 import { ENDPOINTS } from "@/src/api/endPoints";
 import { useAuth } from "@/src/context/AuthContext";
+import Constants from 'expo-constants';
+
 const { height, width } = Dimensions.get("window"); // Get device height
 
 
@@ -97,7 +99,7 @@ export default function LoginScreen() {
         >
           <View style={styles.heading} >
             <Image source={AppImages?.home_logo} style={styles.logo} />
-            <Text style={styles.title}>Welcome Back!</Text>
+            <Text style={styles.title}>Welcome Back!   </Text>
           </View>
           <View style={styles.formContainer} >
 
@@ -144,6 +146,7 @@ export default function LoginScreen() {
           </View>
           <View style={styles.backButton}>
             <CustomButton prefixIcon={<BackIcon color="#00bdff" />} variant="text" title="Back" onPress={() => router.replace("/")} />
+           
           </View>
         </KeyboardAvoidingView>
       </View>
