@@ -1,6 +1,7 @@
 // src/context/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -15,14 +16,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = await SecureStore.getItemAsync('access_token');
-      setIsAuthenticated(!!token);
+      const token = Platform.OS === 'web'
+      ? localStorage.getItem('access_token') // fallback for web
+      : await SecureStore.getItemAsync('access_token');      setIsAuthenticated(!!token);
     };
     checkToken();
   }, []);
 
   const login = async (token: string) => {
-    await SecureStore.setItemAsync('access_token', token);
+    if (Platform.OS === 'web') {
+      localStorage.setItem('access_token', token);
+    } else {
+      await SecureStore.setItemAsync('access_token', token);
+    }
     setIsAuthenticated(true);
   };
 

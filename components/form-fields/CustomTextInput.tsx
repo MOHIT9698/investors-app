@@ -1,6 +1,6 @@
 // src/components/FormTextField.tsx
 import React, { useState } from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import { View, TextInput, Text, StyleSheet, TouchableWithoutFeedback, Keyboard, Platform } from "react-native";
 
 interface Props {
     value: string;
@@ -24,7 +24,7 @@ const FormTextField = ({
     error,
     isMultiline = false,
     numberOfLines = 2,
-}: Props) => {  
+}: Props) => {
 
     const handleChange = (text: string) => {
         if (onChange) {
@@ -32,26 +32,33 @@ const FormTextField = ({
         }
     }
     return (
-        <View style={styles.container}>
-            {label && <Text style={styles.label}  >{label}</Text>}
+        <TouchableWithoutFeedback
+            onPress={() => {
+                if (Platform.OS !== 'web') Keyboard.dismiss();
+            }}
+            accessible={false}
+        >
+            <View style={styles.container}>
+                {label && <Text style={styles.label}  >{label}</Text>}
 
-            <TextInput
-                style={[
-                    styles.textarea,
-                    { height: numberOfLines * 24 },
-                    error && { borderColor: "red" }
-                ]}
-                value={value}
-                onChangeText={handleChange}
-                placeholder={placeholder}
-                placeholderTextColor="#999"
-                secureTextEntry={secureTextEntry}
-                keyboardType={keyboardType}
-                multiline={isMultiline}
-                numberOfLines={numberOfLines}
-            />
-            {error && <Text style={styles.error}>{error}</Text>}
-        </View>
+                <TextInput
+                    style={[
+                        styles.textarea,
+                        { height: numberOfLines * 24 },
+                        error && { borderColor: "red" }
+                    ]}
+                    value={value}
+                    onChangeText={handleChange}
+                    placeholder={placeholder}
+                    placeholderTextColor="#999"
+                    secureTextEntry={secureTextEntry}
+                    keyboardType={keyboardType}
+                    multiline={isMultiline}
+                    numberOfLines={numberOfLines}
+                />
+                {error && <Text style={styles.error}>{error}</Text>}
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 

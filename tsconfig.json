@@ -3,14 +3,10 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-native",
+    "baseUrl": ".",  // Optional but recommended for absolute imports
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

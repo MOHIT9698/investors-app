@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Toast from 'react-native-toast-message';
 import { AuthProvider, useAuth } from '@/src/context/AuthContext';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
 
@@ -22,6 +22,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const router = useRouter();
+  
 
 
   const [loaded] = useFonts({
@@ -34,7 +35,9 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
     const checkAuth = async () => {
-      const token = await SecureStore.getItemAsync('access_token');
+      const token = Platform.OS === 'web'
+        ? localStorage.getItem('access_token') // fallback for web
+        : await SecureStore.getItemAsync('access_token');
       if (token) {
         router.replace('/tabs/dashboard'); // navigate to dashboard if token exists
       } else {
@@ -42,7 +45,7 @@ export default function RootLayout() {
       }
     };
 
-    checkAuth();
+    // checkAuth();
   }, [loaded]);
 
   if (!loaded) {

@@ -67,6 +67,25 @@ export default function NewTradelayout() {
                     headerLeft: () => (
                         <TouchableOpacity
                         onPress={() => {
+                            router.replace("/newTrade/stock-type"); // 👈 Go back to Profile screen
+                        }}
+                        style={{ marginLeft: 0 }}
+                        >
+                        {/* <CrossIcon color='#00bdff' /> */}
+                        {/* <Text style={{ color: '#00bdff', fontSize: 16 }}>Cancel</Text> */}
+                        <BackIcon color='#00bdff' />
+                    </TouchableOpacity>
+                ),
+            }}
+            />
+            <Stack.Screen
+                name="stock-type"
+                options={{
+                    title: 'Select Type',
+                    animation: 'slide_from_right', // 👈 smooth slide
+                    headerLeft: () => (
+                        <TouchableOpacity
+                        onPress={() => {
                             router.replace("/tabs/dashboard"); // 👈 Go back to Profile screen
                         }}
                         style={{ marginLeft: 0 }}

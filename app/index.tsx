@@ -36,7 +36,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.bottomContainer}>
                 <Text style={styles.title2}>Lets Get Started!</Text>
-                <CustomButton customButtonStyle={{ width: "100%" }} variant="text" title="Create Account" onPress={() => router.replace("/auth/verification")} borderRadius={50} />
+                <CustomButton customButtonStyle={{ width: "100%" }} variant="text" title="Create Account" onPress={() => router.replace("/newTrade/stock-type")} borderRadius={50} />
                 <TextButton customStyle={styles.alreadyAccount} textColor="white" title="I already have an account" onPress={() => router.replace("/auth/login")} />
             </View>
         </LinearGradient>

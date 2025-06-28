@@ -155,7 +155,7 @@ export default function TabLayout() {
 
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity style={styles.MenuOption} onPress={()=> handleNavigation("/newTrade/share-trade")} >
+          <TouchableOpacity style={styles.MenuOption} onPress={()=> handleNavigation("/newTrade/stock-type")} >
             <View style={{ minWidth: 30, minHeight:20 }}>
 
               <TradeIcon />

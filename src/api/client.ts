@@ -2,12 +2,14 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getAuthToken } from '../utils/utils';
 import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 
 // const API_BASE_URL = 'https://your-api-url.com/api'; // replace with your API base URL
 // const API_BASE_URL = 'https://91fc-2409-40d1-14-7196-584b-ae9f-6d9-76a2.ngrok-free.app/api/v1'; // replace with your API base URL
-const API_BASE_URL = Constants.expoConfig?.extra?.API_URL;
-
+const API_BASE_URL = Platform.OS === 'web'
+  ? "https://e5ae-152-59-85-167.ngrok-free.app/api/v1"
+  : Constants.expoConfig?.extra?.API_URL;
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
@@ -59,7 +61,7 @@ const apiClient = {
       ...config,
       headers: {
         ...(config?.headers || {}),
-        ...(isFormData ? {'Content-Type': 'multipart/form-data'} : { 'Content-Type': 'application/json' }),
+        ...(isFormData ? { 'Content-Type': 'multipart/form-data' } : { 'Content-Type': 'application/json' }),
       },
     });
   },

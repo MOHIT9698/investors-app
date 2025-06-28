@@ -33,17 +33,19 @@ const Verification = () => {
   });
 
   const sendOtp = async (data: any) => {
-
+    
     if (!data.phone || data.phone.length < 10) {
       Alert.alert("Error", "Please enter a valid phone number.");
       return;
     } else {
       setContact(data?.phone)
-
+      
       try {
         const response = await apiClient.post(ENDPOINTS.SIGN_UP, {
           contact: "+91" + data.phone,
         });
+        console.log("klosso",response);
+        
 
         if (response.data?.status) {
 

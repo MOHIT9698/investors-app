@@ -6,4 +6,5 @@ export const ENDPOINTS = {
   VERIFY_PHONE:'verify-phone',
   FORGOT_PASSWORD:'forget-password',
   PROFILE:'profile',
+  SEARCH_STOCK:(q:string) => `search-stocks?query=${q}`,
 };

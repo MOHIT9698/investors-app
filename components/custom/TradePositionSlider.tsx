@@ -30,6 +30,7 @@ const TradePositionSlider = ({
   valType,
 }: Props) => {
   return (
+    
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={{ width: "100%", borderColor: "gray", borderWidth: 1, padding: 8, borderRadius: 10, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >

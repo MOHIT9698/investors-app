@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 
 const UNITS = ['Minutes', 'Hours', 'Days', 'Weeks', 'Months', 'Years'];
@@ -39,6 +41,8 @@ const DurationPickerField = ({ label, value, onChange, placeholder = "Select dur
   };
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+
     <View style={{ marginBottom: 20 }}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TouchableOpacity
@@ -127,6 +131,7 @@ const DurationPickerField = ({ label, value, onChange, placeholder = "Select dur
         </View>
       </Modal>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

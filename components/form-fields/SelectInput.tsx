@@ -59,7 +59,7 @@ const FormSelectDropdown = ({
           }}
         >
           <View style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-            <Text style={{ color: value ? "#000" : "#999", }}>
+            <Text style={{ color: value ? "#000" : "#999", fontSize:16}}>
               {selectedLabel || placeholder}
             </Text>
             <BackIcon style={{ transform: [{ rotate: open ? "90deg" : "270deg" }] }} />
@@ -76,7 +76,7 @@ const FormSelectDropdown = ({
                   style={styles.optionItem}
                   onPress={() => handleSelect(item)}
                 >
-                  <Text>{item.label}</Text>
+                  <Text style={{fontSize:16}}>{item.label}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     justifyContent: "center",
-    position: "relative"
+    position: "relative",
+    height:45
   },
   dropdown: {
     backgroundColor: "#fff",

@@ -54,6 +54,8 @@ export default function LoginScreen() {
         ...data,
         password: data?.pin
       });
+      console.log("response", response);
+
 
       if (response.data?.status) {
         const token = response?.data?.data;
@@ -90,7 +92,12 @@ export default function LoginScreen() {
 
 
   return (
-    <TouchableWithoutFeedback style={styles.wrapper} onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback
+            onPress={() => {
+                if (Platform.OS !== 'web') Keyboard.dismiss();
+            }}
+            accessible={false}
+        >
       <View
         style={styles.wrapper} >
         <KeyboardAvoidingView
@@ -132,7 +139,7 @@ export default function LoginScreen() {
                 )}
               />
               <TouchableOpacity
-               onPress={() => router.replace("/auth/forgot-password")}
+                onPress={() => router.replace("/auth/forgot-password")}
                 style={styles.forgotButton}
               >
                 <Text style={{ fontSize: 14, color: "#00bdff", }}>Forgot password?</Text>
@@ -146,11 +153,11 @@ export default function LoginScreen() {
           </View>
           <View style={styles.backButton}>
             <CustomButton prefixIcon={<BackIcon color="#00bdff" />} variant="text" title="Back" onPress={() => router.replace("/")} />
-           
+
           </View>
         </KeyboardAvoidingView>
       </View>
-    </TouchableWithoutFeedback>
+     </TouchableWithoutFeedback>
   );
 }
 
@@ -163,7 +170,7 @@ const styles = StyleSheet.create({
   formContainer: { gap: 0, marginTop: 20, },
   button: { marginTop: 30 },
   backButton: { marginBottom: 40, position: "absolute", bottom: 0 },
-  forgotButton: { display: "flex", justifyContent: "flex-end", alignItems: "flex-end",marginTop:-20 },
+  forgotButton: { display: "flex", justifyContent: "flex-end", alignItems: "flex-end", marginTop: -20 },
 
 
 });
