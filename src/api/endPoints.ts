@@ -7,4 +7,5 @@ export const ENDPOINTS = {
   FORGOT_PASSWORD:'forget-password',
   PROFILE:'profile',
   SEARCH_STOCK:(q:string) => `search-stocks?query=${q}`,
+  CREATE_TRADE: `create-trade`,
 };

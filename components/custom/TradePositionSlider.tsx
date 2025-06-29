@@ -17,6 +17,8 @@ interface Props {
   step?: number;
   showRange?: boolean;
   rangeLabels?: string[];
+  disabled?: boolean;
+
 }
 
 const TradePositionSlider = ({
@@ -28,15 +30,17 @@ const TradePositionSlider = ({
   step = 1,
   rangeLabels,
   valType,
+  disabled = false,
+
 }: Props) => {
   return (
-    
+
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
-      <View style={{ width: "100%", borderColor: "gray", borderWidth: 1, padding: 8, borderRadius: 10, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
-        <View style={{width:"80%"}}>
+      <View style={[{ width: "100%", borderColor: "gray", borderWidth: 1, padding: 8, borderRadius: 10, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, disabled && { backgroundColor: "#ccd1d1" },]} >
+        <View style={{ width: "80%" }}>
           {rangeLabels?.length && <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }} >
-            {rangeLabels?.map((ele) => <Text> {ele}</Text>)}
+            {rangeLabels?.map((ele,index) => <Text key={index}> {ele}</Text>)}
 
           </View>}
 
@@ -48,12 +52,14 @@ const TradePositionSlider = ({
             maximumValue={maximumValue}
             step={step}
             minimumTrackTintColor="#00bdff"
-            maximumTrackTintColor="#ccc"
-            thumbTintColor="#00bdff"
+            maximumTrackTintColor={disabled ? "#626666" :"#ccc"}
+            thumbTintColor={disabled ? "#626666" : "#00bdff"}
+            disabled={disabled}
+
           />
         </View>
         <View style={styles.valueRow}>
-          <Text style={styles.percentageText}>{value}{valType ?? ""}</Text>
+          <Text style={[styles.percentageText, disabled && { color: "#626666" }]}>{value}{valType ?? ""}</Text>
         </View>
       </View>
     </View>

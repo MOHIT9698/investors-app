@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, TouchableWithoutFeedback, Keyboard, Platform } from "react-native";
 
 interface Props {
-    value: string;
+    value: string | number| any;
     placeholder: string;
     label?: string;
     onChange: (text: string) => void;
@@ -11,10 +11,11 @@ interface Props {
     keyboardType?: "default" | "email-address" | "phone-pad" | "numeric" | "decimal-pad" | "number-pad";
     error?: string;
     isMultiline?: boolean;
+    disabled?: boolean;
     numberOfLines?: number;
 }
 
-const FormTextField = ({
+const CustomTextInput = ({
     value,
     placeholder,
     label,
@@ -24,6 +25,7 @@ const FormTextField = ({
     error,
     isMultiline = false,
     numberOfLines = 2,
+    disabled = false,
 }: Props) => {
 
     const handleChange = (text: string) => {
@@ -45,6 +47,7 @@ const FormTextField = ({
                     style={[
                         styles.textarea,
                         { height: numberOfLines * 24 },
+                        disabled && { backgroundColor: "#ccd1d1" },
                         error && { borderColor: "red" }
                     ]}
                     value={value}
@@ -55,6 +58,7 @@ const FormTextField = ({
                     keyboardType={keyboardType}
                     multiline={isMultiline}
                     numberOfLines={numberOfLines}
+                    editable={!disabled}
                 />
                 {error && <Text style={styles.error}>{error}</Text>}
             </View>
@@ -62,7 +66,7 @@ const FormTextField = ({
     );
 };
 
-export default FormTextField;
+export default CustomTextInput;
 
 const styles = StyleSheet.create({
     container: {

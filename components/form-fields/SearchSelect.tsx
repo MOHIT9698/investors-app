@@ -22,7 +22,9 @@ interface SearchSelectProps {
   placeholder?: string;
   fetchOptions: (query: string) => Promise<Item[]>;
   onSelect: (item: Item) => void;
-  selectedItem?: Item | null;
+  selectedItem?: Item | string | any | null;
+  error?: string;
+
 }
 
 const SearchSelect = ({
@@ -31,6 +33,8 @@ const SearchSelect = ({
   fetchOptions,
   onSelect,
   selectedItem,
+  error,
+
 }: SearchSelectProps) => {
   const [query, setQuery] = useState("");
   const [data, setData] = useState<Item[]>([]);
@@ -62,24 +66,25 @@ const SearchSelect = ({
   }, [query]);
 
   useEffect(() => {
-    setQuery("");
+    setQuery(selectedItem?.label || "");
     setDropdownVisible(false);
   }, [selectedItem]);
 
   const handleSelect = (item: Item) => {
-    onSelect(item);
+    onSelect(item?.value);
     setQuery(item.label);          // ✅ sets the selected label into the input
     setDropdownVisible(false);
     Keyboard.dismiss();
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => {
-      setDropdownVisible(false);
-      Keyboard.dismiss();
-    }}>
-      <View style={styles.container}>
-        {label && <Text style={styles.label}>{label}</Text>}
+
+    <View style={styles.container}>
+      {label && <Text style={styles.label}>{label}</Text>}
+      {/* <TouchableWithoutFeedback onPress={() => {
+        setDropdownVisible(false);
+        Keyboard.dismiss();
+      }}> */}
 
         <TextInput
           placeholder={placeholder}
@@ -96,29 +101,30 @@ const SearchSelect = ({
             }
           }}
         />
+      {/* </TouchableWithoutFeedback> */}
+      {error && <Text style={styles.error}>{error}</Text>}
 
-        {loading && <ActivityIndicator size="small" color="#666" style={{ marginVertical: 10 }} />}
+      {loading && <ActivityIndicator size="small" color="#666" style={{ marginVertical: 10 }} />}
 
-        {dropdownVisible && !loading && (
-          <View style={styles.dropdown}>
-            {data.length === 0 ? (
-              <Text style={styles.empty}>No results found.</Text>
-            ) : (
-              <FlatList
-                data={data}
-                keyExtractor={(item) => item.id.toString()}
-                keyboardShouldPersistTaps="handled"
-                renderItem={({ item }) => (
-                  <TouchableOpacity style={styles.item} onPress={() => handleSelect(item)}>
-                    <Text style={{ fontSize: 16 }}>{item.label}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-            )}
-          </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+      {dropdownVisible && !loading && (
+        <View style={styles.dropdown}>
+          {data.length === 0 ? (
+            <Text style={styles.empty}>No results found.</Text>
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={(item) => item.id.toString()}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.item} onPress={() => handleSelect(item)}>
+                  <Text style={{ fontSize: 16 }}>{item.label}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          )}
+        </View>
+      )}
+    </View>
   );
 };
 
@@ -141,6 +147,11 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 10,
     fontSize: 16,
+  },
+  error: {
+    color: "red",
+    marginTop: 5,
+    fontSize: 14,
   },
   dropdown: {
     backgroundColor: "#fff",

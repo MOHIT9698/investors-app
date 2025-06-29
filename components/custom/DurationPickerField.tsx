@@ -23,12 +23,16 @@ const UNIT_VALUES: Record<string, string[]> = {
 
 interface Props {
   label?: string;
-  value: string;
+  value: string | any;
   onChange: (val: string) => void;
   placeholder?: string;
+  disabled?: boolean;
+  error?:string;
+
 }
 
-const DurationPickerField = ({ label, value, onChange, placeholder = "Select duration" }: Props) => {
+const DurationPickerField = ({ label, value, onChange, placeholder = "Select duration", disabled = false,error
+}: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState<string>('Minutes');
   const [selectedValue, setSelectedValue] = useState<string>('');
@@ -43,94 +47,101 @@ const DurationPickerField = ({ label, value, onChange, placeholder = "Select dur
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
 
-    <View style={{ marginBottom: 20 }}>
-      {label && <Text style={styles.label}>{label}</Text>}
-      <TouchableOpacity
-        style={styles.input}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={{ color: value ? '#000' : '#999' }}>
-          {value || placeholder}
-        </Text>
-      </TouchableOpacity>
+      <View style={{ marginBottom: 20 }}>
+        {label && <Text style={styles.label}>{label}</Text>}
+        <TouchableOpacity
+          disabled={disabled}
 
-      <Modal visible={modalVisible} animationType="slide" transparent>
-       
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Select Duration</Text>
-            <TouchableOpacity
-          style={styles.closeIcon}
-          onPress={() => setModalVisible(false)}
+          style={[styles.input, , disabled && { backgroundColor: "#ccd1d1" }]}
+          onPress={() => {
+            if (!disabled) {
+              setModalVisible(true)
+            }
+          }}
         >
-          <Text style={{ fontSize: 20 }}>✕</Text>
+          <Text style={{ color: value ? '#000' : '#999' }}>
+            {value || placeholder}
+          </Text>
         </TouchableOpacity>
+        {error && <Text style={styles.error}>{error}</Text>}
 
-            <View style={styles.unitButtonsContainer}>
-              {UNITS.map((unit) => (
-                <TouchableOpacity
-                  key={unit}
-                  style={[
-                    styles.unitButton,
-                    selectedUnit === unit && styles.unitButtonSelected,
-                  ]}
-                  onPress={() => {
-                    setSelectedUnit(unit);
-                    setSelectedValue(''); // reset when changing unit
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: selectedUnit === unit ? '#fff' : '#000',
+        <Modal visible={modalVisible} animationType="slide" transparent>
+
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Select Duration</Text>
+              <TouchableOpacity
+                style={styles.closeIcon}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={{ fontSize: 20 }}>✕</Text>
+              </TouchableOpacity>
+
+              <View style={styles.unitButtonsContainer}>
+                {UNITS.map((unit) => (
+                  <TouchableOpacity
+                    key={unit}
+                    style={[
+                      styles.unitButton,
+                      selectedUnit === unit && styles.unitButtonSelected,
+                    ]}
+                    onPress={() => {
+                      setSelectedUnit(unit);
+                      setSelectedValue(''); // reset when changing unit
                     }}
                   >
-                    {unit}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text
+                      style={{
+                        color: selectedUnit === unit ? '#fff' : '#000',
+                      }}
+                    >
+                      {unit}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <FlatList
+                data={UNIT_VALUES[selectedUnit]}
+                keyExtractor={(item) => item}
+                style={{ marginVertical: 10 }}
+                numColumns={4}
+                contentContainerStyle={{ alignItems: 'center' }}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={[
+                      styles.optionItem,
+                      selectedValue === item && styles.optionItemSelected,
+                    ]}
+                    onPress={() => setSelectedValue(item)}
+                  >
+                    <Text
+                      style={{
+                        color: selectedValue === item ? '#fff' : '#000',
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
+
+              <TouchableOpacity
+                style={[
+                  styles.confirmButton,
+                  !(selectedValue && selectedUnit) && { backgroundColor: '#ccc' },
+                ]}
+                disabled={!selectedValue || !selectedUnit}
+                onPress={handleConfirm}
+              >
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                  Confirm
+                </Text>
+              </TouchableOpacity>
             </View>
-
-            <FlatList
-              data={UNIT_VALUES[selectedUnit]}
-              keyExtractor={(item) => item}
-              style={{ marginVertical: 10 }}
-              numColumns={4}
-              contentContainerStyle={{ alignItems: 'center' }}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={[
-                    styles.optionItem,
-                    selectedValue === item && styles.optionItemSelected,
-                  ]}
-                  onPress={() => setSelectedValue(item)}
-                >
-                  <Text
-                    style={{
-                      color: selectedValue === item ? '#fff' : '#000',
-                    }}
-                  >
-                    {item}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
-
-            <TouchableOpacity
-              style={[
-                styles.confirmButton,
-                !(selectedValue && selectedUnit) && { backgroundColor: '#ccc' },
-              ]}
-              disabled={!selectedValue || !selectedUnit}
-              onPress={handleConfirm}
-            >
-              <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-                Confirm
-              </Text>
-            </TouchableOpacity>
           </View>
-        </View>
-      </Modal>
-    </View>
+        </Modal>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -213,5 +224,10 @@ const styles = StyleSheet.create({
     right: 10,
     zIndex: 1,
     padding: 5,
+  },
+  error: {
+    color: "red",
+    marginTop: 5,
+    fontSize: 14,
   },
 });

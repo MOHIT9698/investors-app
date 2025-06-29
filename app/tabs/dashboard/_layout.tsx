@@ -9,7 +9,7 @@ export default function DashboardLayout() {
     const colorScheme = useColorScheme();
 
     const handleShowNotification = () => {
-
+router.push("/")
     }
 
 

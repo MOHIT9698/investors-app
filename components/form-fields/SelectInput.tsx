@@ -17,11 +17,12 @@ interface OptionType {
 
 interface Props {
   label?: string;
-  value: string;
+  value: string | any;
   placeholder: string;
   onSelect: (selected: string) => void;
   options: OptionType[];
   error?: string;
+  disabled?: boolean;
 }
 
 const FormSelectDropdown = ({
@@ -31,6 +32,7 @@ const FormSelectDropdown = ({
   onSelect,
   options,
   error,
+  disabled = false,
 }: Props) => {
   const [open, setOpen] = useState(false);
 
@@ -52,14 +54,18 @@ const FormSelectDropdown = ({
         {label && <Text style={styles.label}>{label}</Text>}
 
         <TouchableOpacity
-          style={[styles.input, error && { borderColor: "red" }]}
+          disabled={disabled}
+          style={[styles.input, error && { borderColor: "red" }, disabled && { backgroundColor: "#ccd1d1" },]}
           onPress={(e) => {
-            e.stopPropagation?.();
-            setOpen(!open);
+            if(!disabled){
+
+              e.stopPropagation?.();
+              setOpen(!open);
+            }
           }}
         >
           <View style={{ display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between" }}>
-            <Text style={{ color: value ? "#000" : "#999", fontSize:16}}>
+            <Text style={{ color: value ? "#000" : "#999", fontSize: 16 }}>
               {selectedLabel || placeholder}
             </Text>
             <BackIcon style={{ transform: [{ rotate: open ? "90deg" : "270deg" }] }} />
@@ -76,7 +82,7 @@ const FormSelectDropdown = ({
                   style={styles.optionItem}
                   onPress={() => handleSelect(item)}
                 >
-                  <Text style={{fontSize:16}}>{item.label}</Text>
+                  <Text style={{ fontSize: 16 }}>{item.label}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -111,7 +117,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "center",
     position: "relative",
-    height:45
+    height: 45
   },
   dropdown: {
     backgroundColor: "#fff",

@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 // const API_BASE_URL = 'https://your-api-url.com/api'; // replace with your API base URL
 // const API_BASE_URL = 'https://91fc-2409-40d1-14-7196-584b-ae9f-6d9-76a2.ngrok-free.app/api/v1'; // replace with your API base URL
 const API_BASE_URL = Platform.OS === 'web'
-  ? "https://e5ae-152-59-85-167.ngrok-free.app/api/v1"
+  ? "https://aca2-2409-40d1-1c-c8e1-5458-a369-8af0-56e2.ngrok-free.app/api/v1/"
   : Constants.expoConfig?.extra?.API_URL;
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -22,7 +22,10 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     // Example: Add token if available
-    const token = await getAuthToken();
+    const token = localStorage.getItem('access_token') ?? await getAuthToken();
+
+    console.log("token",token);
+    
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, StyleSheet, View } from "react-native";
+import { Text, TouchableOpacity, StyleSheet, View, ActivityIndicator } from "react-native";
 import { BackIcon } from "./ui/Icons/Svg";
 
 interface CustomButtonProps {
@@ -11,8 +11,9 @@ interface CustomButtonProps {
   fontSize?: number;
   variant: "contained" | "outlined" | "text";
   prefixIcon?: any;
-  customButtonStyle?:any;
-  disabled?:boolean;
+  customButtonStyle?: any;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -26,9 +27,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   fontSize,
   customButtonStyle,
   disabled,
+  loading = false
 }) => {
 
-  const customBgColor = disabled === true ? "#ccd1d1" : color ? color :  variant === "contained" ? "#00bdff" : "#FFFFFF";
+  const customBgColor = disabled === true ? "#ccd1d1" : color ? color : variant === "contained" ? "#00bdff" : "#FFFFFF";
   const customTextColor = disabled === true ? "white" : textColor ?? variant === "contained" ? "#FFFFFF" : "#00bdff";
   const customBorderWidth = variant === "outlined" ? 2 : 0;
   const customBorderColor = variant === "outlined" ? "#00bdff" : "";
@@ -36,13 +38,21 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
   return (
     <TouchableOpacity
-      style={[styles.button, customButtonStyle, disabled &&{pointerEvents : "none"}, { backgroundColor: customBgColor, borderWidth: customBorderWidth, borderColor: customBorderColor, borderRadius: customBorderRadius }]}
+      style={[styles.button, customButtonStyle, disabled && { pointerEvents: "none" }, { backgroundColor: customBgColor, borderWidth: customBorderWidth, borderColor: customBorderColor, borderRadius: customBorderRadius }]}
       onPress={onPress}
     >
       {
-        prefixIcon && <View style={styles.prefix} >{prefixIcon}</View>
+        loading ?
+          <ActivityIndicator size="small" color="#007AFF" />
+          :
+          <View>
+            {
+              prefixIcon && <View style={styles.prefix} >{prefixIcon}</View>
+            }
+
+            <Text style={[styles.text, { color: customTextColor, fontSize: fontSize ?? 18 }]}>{title}</Text>
+          </View>
       }
-      <Text style={[styles.text, { color: customTextColor,fontSize: fontSize ?? 18 }]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -55,14 +65,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     display: "flex",
-    flexDirection:"row",
+    flexDirection: "row",
     gap: 5
   },
   text: {
     // fontSize: 18,
     fontWeight: "500",
   },
-  prefix:{
+  prefix: {
     // backgroundColor:"red"
   }
 });
